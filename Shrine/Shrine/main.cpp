@@ -70,6 +70,9 @@ int main()
 	// configure global opengl state
 	// -----------------------------
 	glEnable(GL_DEPTH_TEST);
+
+	Shader modelLoadingShader("model_loading.vs", "model_loading.fs");
+	Model templeModel("resources/objects/temple/Japanese_country_house_3_obj.obj");
 	
 	SkyBox skybox = SkyBox();
 	EightDiagram eightDiagram = EightDiagram();
@@ -94,6 +97,12 @@ int main()
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+
+		modelLoadingShader.use();
+		modelLoadingShader.setMat4("projection", projection);
+		modelLoadingShader.setMat4("view", view);
+		modelLoadingShader.setMat4("model", model);
+		templeModel.Draw(modelLoadingShader);
 
 		// eight-diagram
 		eightDiagram.setPos(eightDiagram.getPos() - deltaTime * eightDiagram.getTranslateV());
