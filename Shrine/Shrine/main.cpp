@@ -122,6 +122,53 @@ int main()
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 
+	float sin = glm::sin(22.5f);
+	float cos = glm::cos(22.5f);
+	float d = 0.08f;
+	float e = 1.0f / (2.0f * glm::cos(22.5f));
+	float sine = e * sin;
+	float cose = e * cos;
+	float eightDiagram[] = {
+		-sin - d, cos, 0.0f, -sine + d + 0.5f, cose + 0.5f,
+		sin + d, cos, 0.0f, sine - d + 0.5f, cose + 0.5f,
+		0.0f, 0.0f, 0.0f, 0.5f, 0.5f,
+		sin + d, cos, 0.0f, sine - d + 0.5f, cose + 0.5f,
+		cos, sin + d, 0.0f, cose + 0.5f, sine - d + 0.5f,
+		0.0f, 0.0f, 0.0f, 0.5f, 0.5f,
+		cos, sin + d, 0.0f, cose + 0.5f, sine - d + 0.5f,
+		cos, -sin - d, 0.0f, cose + 0.5f, -sine + d + 0.5f,
+		0.0f, 0.0f, 0.0f, 0.5f, 0.5f,
+		cos, -sin - d, 0.0f, cose + 0.5f, -sine + d + 0.5f,
+		sin + d, -cos, 0.0f, sine - d + 0.5f, -cose + 0.5f,
+		0.0f, 0.0f, 0.0f, 0.5f, 0.5f,
+		sin + d, -cos, 0.0f, sine - d + 0.5f, -cose + 0.5f,
+		-sin - d, -cos, 0.0f, -sine + d + 0.5f, -cose + 0.5f,
+		0.0f, 0.0f, 0.0f, 0.5f, 0.5f,
+		-sin - d, -cos, 0.0f, -sine + d + 0.5f, -cose + 0.5f,
+		-cos, -sin - d, 0.0f, -cose + 0.5f, -sine + d + 0.5f,
+		0.0f, 0.0f, 0.0f, 0.5f, 0.5f,
+		-cos, -sin - d, 0.0f, -cose + 0.5f, -sine + d + 0.5f,
+		-cos, sin + d, 0.0f, -cose + 0.5f, sine - d + 0.5f,
+		0.0f, 0.0f, 0.0f, 0.5f, 0.5f,
+		-cos, sin + d, 0.0f, -cose + 0.5f, sine - d + 0.5f,
+		-sin - d, cos, 0.0f, -sine + d + 0.5f, cose + 0.5f,
+		0.0f, 0.0f, 0.0f, 0.5f, 0.5f,
+	};
+
+	// eightDiagram VAO
+	unsigned int edVAO, edVBO;
+	glGenVertexArrays(1, &edVAO);
+	glGenBuffers(1, &edVBO);
+	glBindVertexArray(edVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, edVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(eightDiagram), &eightDiagram, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+
+	unsigned int edTexture = loadTexture("resources/textures/eight-diagram.jpg");
+
 	// cube VAO
 	unsigned int cubeVAO, cubeVBO;
 	glGenVertexArrays(1, &cubeVAO);
@@ -171,10 +218,17 @@ int main()
 		shader.setMat4("projection", projection);
 
 		// cubes
-		glBindVertexArray(cubeVAO);
+		//glBindVertexArray(cubeVAO);
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, cubeTexture);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glBindVertexArray(0);
+
+		// eight-diagram
+		glBindVertexArray(edVAO);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, cubeTexture);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindTexture(GL_TEXTURE_2D, edTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 24);
 		glBindVertexArray(0);
 
 		// skybox
