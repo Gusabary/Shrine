@@ -102,6 +102,8 @@ int main()
 		model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		eightDiagram.drawEightDiagram(model, view, projection);
 
+		camera.ProcessMouseMovement(-deltaTime * 70, 0.0f);  // for more smoothness
+
 		// skybox
 		view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
 		skybox.drawSkybox(view, projection);
@@ -153,6 +155,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 // -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
+	cout << window << '\t' << xpos << endl;
 	if (firstMouse)
 	{
 		lastX = xpos;
