@@ -18,13 +18,14 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
+unsigned int loadTexture(char const *path);
 
 // settings
 const unsigned int SCR_WIDTH = 1280;
 const unsigned int SCR_HEIGHT = 720;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.6f, 1.0f, 3.0f));
 float lastX = (float)SCR_WIDTH / 2.0;
 float lastY = (float)SCR_HEIGHT / 2.0;
 bool firstMouse = true;
@@ -73,9 +74,57 @@ int main()
 
 	Shader modelLoadingShader("model_loading.vs", "model_loading.fs");
 	Model templeModel("resources/objects/temple/Japanese_country_house_3_obj.obj");
+
+	float cubeVertices[] = {
+		// positions          // texture Coords
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	};
 	
 	SkyBox skybox = SkyBox();
 	EightDiagram eightDiagram = EightDiagram();
+
+	unsigned int diffuseMap = loadTexture("resources/objects/temple/Japanese_country_house_3_obj.obj");
+	unsigned int specularMap = loadTexture("resources/objects/temple/Japanese_country_house_3_obj.obj");
 
 	// render loop
 	// -----------
@@ -98,10 +147,29 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
+		// temple model
 		modelLoadingShader.use();
 		modelLoadingShader.setMat4("projection", projection);
 		modelLoadingShader.setMat4("view", view);
 		modelLoadingShader.setMat4("model", model);
+		modelLoadingShader.setInt("material.diffuse", 0);
+		modelLoadingShader.setInt("material.specular", 1);
+		modelLoadingShader.setFloat("material.shininess", 32.0f);
+		modelLoadingShader.setVec3("light.position", camera.Position);
+		modelLoadingShader.setVec3("light.color", 1.0f, 1.0f, 1.0f);
+		modelLoadingShader.setVec3("light.direction", camera.Front);
+		modelLoadingShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+		modelLoadingShader.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
+		modelLoadingShader.setVec3("viewPos", camera.Position);
+		float ambientValue = 0.1f;
+		float diffuseValue = 0.8f;
+		float specularValue = 1.0f;
+		modelLoadingShader.setVec3("light.ambient", ambientValue, ambientValue, ambientValue);
+		modelLoadingShader.setVec3("light.diffuse", diffuseValue, diffuseValue, diffuseValue);
+		modelLoadingShader.setVec3("light.specular", specularValue, specularValue, specularValue);
+		modelLoadingShader.setFloat("light.constant", 1.0f);
+		modelLoadingShader.setFloat("light.linear", 0.09f);
+		modelLoadingShader.setFloat("light.quadratic", 0.032f);
 		templeModel.Draw(modelLoadingShader);
 
 		// eight-diagram
@@ -111,7 +179,7 @@ int main()
 		model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		eightDiagram.drawEightDiagram(model, view, projection);
 
-		camera.ProcessMouseMovement(-deltaTime * 70, 0.0f);  // for more smoothness
+		//camera.ProcessMouseMovement(-deltaTime * 70, 0.0f);  // for more smoothness
 
 		// skybox
 		view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
@@ -186,4 +254,40 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(yoffset);
+}
+
+unsigned int loadTexture(char const *path)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+
+	int width, height, nrChannels;
+	stbi_set_flip_vertically_on_load(true);
+	unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
+
+	if (data)
+	{
+		GLenum format;
+		if (nrChannels == 1)
+			format = GL_RED;
+		else if (nrChannels == 3)
+			format = GL_RGB;
+		else if (nrChannels == 4)
+			format = GL_RGBA;
+
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+	return textureID;
 }
