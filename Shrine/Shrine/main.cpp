@@ -96,6 +96,10 @@ int main()
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
 		// eight-diagram
+		eightDiagram.setPos(eightDiagram.getPos() - deltaTime * eightDiagram.getTranslateV());
+		model = glm::translate(model, glm::vec3(eightDiagram.getPos(), 0.0f, -20.0f));
+		model = glm::rotate(model, (float)(glfwGetTime() * eightDiagram.getRotateV()), glm::vec3(0.0f, 0.5f, 1.0f));
+		model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		eightDiagram.drawEightDiagram(model, view, projection);
 
 		// skybox

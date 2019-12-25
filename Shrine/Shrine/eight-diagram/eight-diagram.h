@@ -47,8 +47,9 @@ public:
 	Shader eightDiagramShader;
 
 	EightDiagram()
-		: eightDiagramShader(Shader("eight-diagram/eight-diagram.vs", "eight-diagram/eight-diagram.fs")) {
-
+		: eightDiagramShader(Shader("eight-diagram/eight-diagram.vs", "eight-diagram/eight-diagram.fs")),
+		  pos(20.0f), rotateV(5.0f), translateV(5.0f)
+	{
 		// eightDiagram VAO
 		glGenVertexArrays(1, &edVAO);
 		glGenBuffers(1, &edVBO);
@@ -82,11 +83,21 @@ public:
 		glBindVertexArray(0);
 	}
 
+	float getPos() { return this->pos; }
+
+	void setPos(float pos) { this->pos = pos; }
+
+	float getRotateV() { return this->rotateV; }
+
+	float getTranslateV() { return this->translateV; }
+
 private:
 	// utility function for loading a 2D texture from file
 	// ---------------------------------------------------
 	unsigned int edVAO, edVBO;
 	unsigned int edTexture;
+	float pos;
+	const float rotateV, translateV;
 
 	unsigned int loadTexture(char const * path)
 	{
