@@ -11,6 +11,7 @@
 #include "model.h"
 #include "skybox/skybox.h"
 #include "eight-diagram/eight-diagram.h"
+#include "temple/temple.h"
 
 #include <iostream>
 
@@ -72,59 +73,9 @@ int main()
 	// -----------------------------
 	glEnable(GL_DEPTH_TEST);
 
-	Shader modelLoadingShader("model_loading.vs", "model_loading.fs");
-	Model templeModel("resources/objects/temple/Japanese_country_house_3_obj.obj");
-
-	float cubeVertices[] = {
-		// positions          // texture Coords
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-	};
-	
 	SkyBox skybox = SkyBox();
 	EightDiagram eightDiagram = EightDiagram();
-
-	unsigned int diffuseMap = loadTexture("resources/objects/temple/Japanese_country_house_3_obj.obj");
-	unsigned int specularMap = loadTexture("resources/objects/temple/Japanese_country_house_3_obj.obj");
+	Temple temple = Temple();
 
 	// render loop
 	// -----------
@@ -148,29 +99,7 @@ int main()
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
 		// temple model
-		modelLoadingShader.use();
-		modelLoadingShader.setMat4("projection", projection);
-		modelLoadingShader.setMat4("view", view);
-		modelLoadingShader.setMat4("model", model);
-		modelLoadingShader.setInt("material.diffuse", 0);
-		modelLoadingShader.setInt("material.specular", 1);
-		modelLoadingShader.setFloat("material.shininess", 32.0f);
-		modelLoadingShader.setVec3("light.position", camera.Position);
-		modelLoadingShader.setVec3("light.color", 1.0f, 1.0f, 1.0f);
-		modelLoadingShader.setVec3("light.direction", camera.Front);
-		modelLoadingShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
-		modelLoadingShader.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
-		modelLoadingShader.setVec3("viewPos", camera.Position);
-		float ambientValue = 0.1f;
-		float diffuseValue = 0.8f;
-		float specularValue = 1.0f;
-		modelLoadingShader.setVec3("light.ambient", ambientValue, ambientValue, ambientValue);
-		modelLoadingShader.setVec3("light.diffuse", diffuseValue, diffuseValue, diffuseValue);
-		modelLoadingShader.setVec3("light.specular", specularValue, specularValue, specularValue);
-		modelLoadingShader.setFloat("light.constant", 1.0f);
-		modelLoadingShader.setFloat("light.linear", 0.09f);
-		modelLoadingShader.setFloat("light.quadratic", 0.032f);
-		templeModel.Draw(modelLoadingShader);
+		temple.drawTemple(model, view, projection, camera);
 
 		// eight-diagram
 		eightDiagram.setPos(eightDiagram.getPos() - deltaTime * eightDiagram.getTranslateV());
