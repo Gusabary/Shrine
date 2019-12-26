@@ -11,8 +11,9 @@ public:
 	Shader rockShader;
 
 	Rock()
-		: rockShader(Shader("rock/rock.vs", "rock/rock.fs")),
-		rockModel(Model("resources/objects/rock/rockkk.obj"))
+		: rockShader(Shader("rock/rock.vs", "rock/rock.fs", "rock/rock.gs")),
+		rockModel(Model("resources/objects/rock/rockkk.obj")),
+		startTime(glfwGetTime())
 	{}
 
 	void drawRock(glm::mat4 model, glm::mat4 view, glm::mat4 projection, Camera camera) {
@@ -38,6 +39,7 @@ public:
 		rockShader.setFloat("light.constant", 1.0f);
 		rockShader.setFloat("light.linear", 0.09f);
 		rockShader.setFloat("light.quadratic", 0.032f);
+		rockShader.setFloat("time", glfwGetTime() - startTime);
 		rockModel.Draw(rockShader);
 	}
 
@@ -45,4 +47,5 @@ private:
 	unsigned int skyboxVAO, skyboxVBO;
 	unsigned int cubemapTexture;
 	Model rockModel;
+	const float startTime;
 };

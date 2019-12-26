@@ -101,9 +101,8 @@ int main()
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -8.0f));
 		rock.drawRock(model, view, projection, camera);
-
 		// temple model
 		//temple.drawTemple(model, view, projection, camera);
 
