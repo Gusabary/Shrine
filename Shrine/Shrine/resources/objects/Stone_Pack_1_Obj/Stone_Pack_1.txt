@@ -1,0 +1,83 @@
+Low poly Stones for Games.
+After you place some stones, rotate them until they dont look too dark  or too bright with your scene lightning.
+
+There is also a similar terrain texture (It looks better when not tiled too much).
+ 
+It was originally made for old game engine Reality Factory,for making games with no programming.
+RF had a big success iin its days.
+
+If anyone is interested,a new open source Reality Factory,the RF2 is on now in develpment,but there is only one developer whith little time to spare 
+on the project and progress,
+So,if any programmer is interested to help developing this wonderful Game engine that will make game developing easy to anyone,
+can get the code from there and start working
+
+http://sourceforge.net/projects/realityfactory2/
+
+visit the RF2 forum for details, Developer is User: Paradoxnj
+
+http://www.realityfactory.info/forum/viewforum.php?f=13&sid=81bfd95d4cde8bf3e497c16f94b714d3
+
+http://veleran.cgsociety.org/gallery/
+
+Stone_1
+Faces: 1584
+Points: 794
+
+Stone_1_LOD1
+Faces: 396
+Points: 200
+
+Stone_1_LOD2
+Faces: 88
+Points: 46
+-------------
+
+Stone_2
+Faces: 396
+Points: 200
+Export all Lod levels,and the game engine will render each one according the rendering distance.
+
+Stone_2_LOD1
+Faces: 88
+Points: 46
+
+Stone_2_LOD2
+Faces: 44
+Points: 46
+--------
+Stone_3
+Faces: 396
+Points: 200
+
+Stone_3_LOD1
+Faces: 88
+Points: 46
+
+Stone_3_LOD2
+Faces: 32
+Points: 18
+--------------
+Stone_4
+Faces: 396
+Points: 200
+
+Stone_4_LOD1
+Faces: 88
+Points: 46
+
+Stone_4_LOD2
+Faces: 18
+Points: 11
+------------------
+Stone_5
+Faces: 6336
+Points: 3170
+
+Stone_5_LOD1
+Faces: 1584
+Points: 794
+
+Stone_5_LOD2
+Faces: 396
+Points: 200
+------------------

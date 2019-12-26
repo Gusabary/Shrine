@@ -13,6 +13,7 @@
 #include "eight-diagram/eight-diagram.h"
 #include "temple/temple.h"
 #include "book/book.h"
+#include "rock/rock.h"
 
 #include <iostream>
 
@@ -78,6 +79,7 @@ int main()
 	EightDiagram eightDiagram = EightDiagram();
 	Temple temple = Temple();
 	Book book = Book();
+	Rock rock = Rock();
 
 	// render loop
 	// -----------
@@ -100,6 +102,8 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
+		rock.drawRock(model, view, projection, camera);
+
 		// temple model
 		//temple.drawTemple(model, view, projection, camera);
 
@@ -110,7 +114,7 @@ int main()
 		//model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		//eightDiagram.drawEightDiagram(model, view, projection);
 
-		book.drawBook(model, view, projection, camera);
+		//book.drawBook(model, view, projection, camera);
 
 		//camera.ProcessMouseMovement(-deltaTime * 70, 0.0f);  // for more smoothness
 
