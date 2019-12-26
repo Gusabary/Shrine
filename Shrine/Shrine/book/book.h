@@ -73,6 +73,7 @@ public:
 		bookShader.setFloat("light.constant", 1.0f);
 		bookShader.setFloat("light.linear", 0.09f);
 		bookShader.setFloat("light.quadratic", 0.032f);
+		bookShader.setFloat("cameraPos", camera.Position.z);
 
 		glBindVertexArray(bookVAO);
 		glActiveTexture(GL_TEXTURE0);

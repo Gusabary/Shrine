@@ -32,6 +32,7 @@ uniform Light light;
 uniform Material material;
 uniform vec3 viewPos;
 uniform sampler2D normalMap; 
+uniform float cameraPos;
 
 void main()
 {
@@ -65,5 +66,12 @@ void main()
     specular *= attenuation;   
         
     vec3 result = ambient + diffuse + specular;
-    FragColor = vec4(result, 1.0);
+    //FragColor = vec4(result, 1.0);
+	float fogDistance = cameraPos - FragPos.z;
+	float fogMax = 10.0f;
+	float fogMin = 2.0f;
+	float fogFactor = (fogMax - fogDistance) / (fogMax - fogMin);
+	fogFactor = clamp(fogFactor, 0.0f, 1.0f);
+	vec4 fogColor = vec4(0.8f, 0.8f, 0.8f, 0.0f);
+	FragColor = mix(fogColor, vec4(result, 1.0), fogFactor);
 }
