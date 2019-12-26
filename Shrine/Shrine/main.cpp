@@ -12,6 +12,7 @@
 #include "skybox/skybox.h"
 #include "eight-diagram/eight-diagram.h"
 #include "temple/temple.h"
+#include "book/book.h"
 
 #include <iostream>
 
@@ -76,6 +77,7 @@ int main()
 	SkyBox skybox = SkyBox();
 	EightDiagram eightDiagram = EightDiagram();
 	Temple temple = Temple();
+	Book book = Book();
 
 	// render loop
 	// -----------
@@ -99,14 +101,16 @@ int main()
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
 		// temple model
-		temple.drawTemple(model, view, projection, camera);
+		//temple.drawTemple(model, view, projection, camera);
 
 		// eight-diagram
-		eightDiagram.setPos(eightDiagram.getPos() - deltaTime * eightDiagram.getTranslateV());
-		model = glm::translate(model, glm::vec3(eightDiagram.getPos(), 0.0f, -20.0f));
-		model = glm::rotate(model, (float)(glfwGetTime() * eightDiagram.getRotateV()), glm::vec3(0.0f, 0.5f, 1.0f));
-		model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		eightDiagram.drawEightDiagram(model, view, projection);
+		//eightDiagram.setPos(eightDiagram.getPos() - deltaTime * eightDiagram.getTranslateV());
+		//model = glm::translate(model, glm::vec3(eightDiagram.getPos(), 0.0f, -20.0f));
+		//model = glm::rotate(model, (float)(glfwGetTime() * eightDiagram.getRotateV()), glm::vec3(0.0f, 0.5f, 1.0f));
+		//model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		//eightDiagram.drawEightDiagram(model, view, projection);
+
+		book.drawBook(model, view, projection, camera);
 
 		//camera.ProcessMouseMovement(-deltaTime * 70, 0.0f);  // for more smoothness
 
