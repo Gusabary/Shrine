@@ -112,7 +112,7 @@ int main()
 		//rock.drawRock(model, view, projection, camera);
 
 		// temple model
-		//temple.drawTemple(model, view, projection, camera);
+		temple.drawTemple(model, view, projection, camera);
 
 		// buddha
 		model = glm::mat4(1.0f);

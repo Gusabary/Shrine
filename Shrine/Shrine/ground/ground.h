@@ -10,13 +10,13 @@
 
 const float groundSize = 100.0f;
 const float groundVertices[] = {
-	groundSize, -1.0f, -groundSize, 1.0f, 1.0f,   // 右上
-	-groundSize, -1.0f, -groundSize, 0.0f, 1.0f,    // 左上
-	-groundSize, -1.0f, groundSize, 0.0f, 0.0f,   // 左下
+	groundSize, 0.0f, -groundSize, 1.0f, 1.0f,   // 右上
+	-groundSize, 0.0f, -groundSize, 0.0f, 1.0f,    // 左上
+	-groundSize, 0.0f, groundSize, 0.0f, 0.0f,   // 左下
 
-	groundSize, -1.0f, groundSize, 1.0f, 0.0f,   // 右下
-	-groundSize, -1.0f, groundSize, 0.0f, 0.0f,   // 左下
-	groundSize, -1.0f, -groundSize, 1.0f, 1.0f,   // 右上
+	groundSize, 0.0f, groundSize, 1.0f, 0.0f,   // 右下
+	-groundSize, 0.0f, groundSize, 0.0f, 0.0f,   // 左下
+	groundSize, 0.0f, -groundSize, 1.0f, 1.0f,   // 右上
 };
 
 class Ground {
