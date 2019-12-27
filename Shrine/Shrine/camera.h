@@ -86,6 +86,20 @@ public:
 		return true;
 	}
 
+	bool inStairsArea(glm::vec3 pos) {
+		return true;
+	}
+
+	float updatePosY(glm::vec3 pos) {
+		if (pos.x >= -2.75 && pos.x <= 2.15 && pos.z >= -5.7 && pos.z <= 5.7)
+			return 2.0f;
+		if (pos.x >= -0.65 && pos.x <= 1.0 && pos.z >= -8.4 && pos.z <= -5.7)
+			return (float(pos.z - (-8.4)) / float((-5.7) - (-8.4))) + 1.0;
+		if (pos.x >= -0.65 && pos.x <= 1.0 && pos.z >= 5.7 && pos.z <= 8.7)
+			return 2.0 - (float(pos.z - 5.7) / float(8.7 - 5.7));
+		return 1.0f;
+	}
+
     // Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
     void ProcessKeyboard(Camera_Movement direction, float deltaTime)
     {
@@ -106,6 +120,7 @@ public:
 
 		if (inLegalArea(oldPos) && !inLegalArea(Position))
 			Position = oldPos;
+		Position.y = updatePosY(Position);
 		//Position.y = 1.0f;
     }
 
