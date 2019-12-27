@@ -15,6 +15,7 @@
 #include "book/book.h"
 #include "rock/rock.h"
 #include "ground/ground.h"
+#include "buddha/buddha.h"
 
 #include <iostream>
 
@@ -82,6 +83,7 @@ int main()
 	Book book = Book();
 	Rock rock = Rock();
 	Ground ground = Ground();
+	Buddha buddha = Buddha();
 	
 
 	// render loop
@@ -105,10 +107,18 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -8.0f));
+
+		// rock
 		//rock.drawRock(model, view, projection, camera);
 
 		// temple model
 		//temple.drawTemple(model, view, projection, camera);
+
+		// buddha
+		model = glm::mat4(1.0f);
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.005f, 0.005f, 0.005f));
+		buddha.draw(model, view, projection, camera);
 
 		// eight-diagram
 		//eightDiagram.setPos(eightDiagram.getPos() - deltaTime * eightDiagram.getTranslateV());
