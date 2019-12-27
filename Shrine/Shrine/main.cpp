@@ -118,7 +118,7 @@ int main()
 
 		// buddha
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, buddhaHeight, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.4f, 0.0f));
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.005f, 0.005f, 0.005f));
 		buddha.draw(model, view, projection, camera);
@@ -163,18 +163,25 @@ int main()
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)
 {
-	cout << buddhaHeight << endl;
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		camera.ProcessKeyboard(FORWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 		camera.ProcessKeyboard(BACKWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 		camera.ProcessKeyboard(LEFT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 		camera.ProcessKeyboard(RIGHT, deltaTime);
+		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
+	}
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
 		buddhaHeight += 0.005f;
 		cout << buddhaHeight << endl;
