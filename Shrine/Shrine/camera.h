@@ -86,10 +86,6 @@ public:
 		return true;
 	}
 
-	bool inStairsArea(glm::vec3 pos) {
-		return true;
-	}
-
 	float updatePosY(glm::vec3 pos) {
 		if (pos.x >= -2.75 && pos.x <= 2.15 && pos.z >= -5.7 && pos.z <= 5.7)
 			return 2.0f;
@@ -121,7 +117,6 @@ public:
 		if (inLegalArea(oldPos) && !inLegalArea(Position))
 			Position = oldPos;
 		Position.y = updatePosY(Position);
-		//Position.y = 1.0f;
     }
 
     // Processes input received from a mouse input system. Expects the offset value in both the x and y direction.

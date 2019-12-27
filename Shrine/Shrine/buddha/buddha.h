@@ -17,6 +17,7 @@ public:
 
 	void draw(glm::mat4 model, glm::mat4 view, glm::mat4 projection, Camera camera) {
 		shader.use();
+		shader.setVec3("cameraPos", camera.Position);
 		shader.setMat4("projection", projection);
 		shader.setMat4("view", view);
 		shader.setMat4("model", model);

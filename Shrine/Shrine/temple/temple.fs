@@ -65,5 +65,14 @@ void main()
     specular *= attenuation;   
         
     vec3 result = ambient + diffuse + specular;
-    FragColor = vec4(result, 1.0);
+
+	float fogDistance = sqrt(pow(viewPos.x - FragPos.x, 2) + pow(viewPos.z - FragPos.z, 2));
+	float fogMax = 40.0f;
+	float fogMin = 5.0f;
+	float fogFactor = (fogMax - fogDistance) / (fogMax - fogMin);
+	fogFactor = clamp(fogFactor, 0.3f, 1.0f);
+	vec4 fogColor = vec4(0.8f, 0.8f, 0.8f, 1.0f);
+    FragColor = mix(fogColor, vec4(result, 1.0), fogFactor);
+
+   // FragColor = vec4(result, 1.0);
 }
