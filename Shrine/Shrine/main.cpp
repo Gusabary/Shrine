@@ -39,6 +39,8 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+float buddhaHeight = 0.0f;
+
 int main()
 {
 	// glfw: initialize and configure
@@ -116,6 +118,7 @@ int main()
 
 		// buddha
 		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f, buddhaHeight, 0.0f));
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.005f, 0.005f, 0.005f));
 		buddha.draw(model, view, projection, camera);
@@ -160,6 +163,7 @@ int main()
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)
 {
+	cout << buddhaHeight << endl;
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
@@ -171,9 +175,17 @@ void processInput(GLFWwindow *window)
 		camera.ProcessKeyboard(LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+		buddhaHeight += 0.005f;
+		cout << buddhaHeight << endl;
+	}
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+		buddhaHeight -= 0.005f;
+		cout << buddhaHeight << endl;
+	}
+	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
 		camera.ProcessKeyboard(UP, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		camera.ProcessKeyboard(DOWN, deltaTime);
 }
 
@@ -190,7 +202,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 // -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-	cout << window << '\t' << xpos << endl;
+	//cout << window << '\t' << xpos << endl;
 	if (firstMouse)
 	{
 		lastX = xpos;
