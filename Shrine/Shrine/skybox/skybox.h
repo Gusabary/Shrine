@@ -4,7 +4,7 @@
 
 using namespace std;
 
-float skyboxVertices[] = {
+float skyboxVerticesBackup[] = {
 	// positions          
 	-1.0f,  1.0f, -1.0f,
 	-1.0f, -1.0f, -1.0f,
@@ -49,6 +49,53 @@ float skyboxVertices[] = {
 	1.0f, -1.0f,  1.0f
 };
 
+const float ground = -1.0f;
+
+float skyboxVertices[] = {
+	// positions          
+	-1.0f,  1.0f, -1.0f,
+	-1.0f, ground, -1.0f,
+	1.0f, ground, -1.0f,
+	1.0f, ground, -1.0f,
+	1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+
+	-1.0f, ground,  1.0f,
+	-1.0f, ground, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f, ground,  1.0f,
+
+	1.0f, ground, -1.0f,
+	1.0f, ground,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f, -1.0f,
+	1.0f, ground, -1.0f,
+
+	-1.0f, ground,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f, ground,  1.0f,
+	-1.0f, ground,  1.0f,
+
+	-1.0f,  1.0f, -1.0f,
+	1.0f,  1.0f, -1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f, -1.0f,
+
+	-1.0f, ground, -1.0f,
+	-1.0f, ground,  1.0f,
+	1.0f, ground, -1.0f,
+	1.0f, ground, -1.0f,
+	-1.0f, ground,  1.0f,
+	1.0f, ground,  1.0f
+};
+
 class SkyBox {
 public:
 	Shader skyboxShader;
@@ -69,12 +116,18 @@ public:
 		// -------------
 		vector<std::string> faces
 		{
-			"resources/skybox/right.jpg",
-			"resources/skybox/left.jpg",
-			"resources/skybox/top.jpg",
-			"resources/skybox/bottom.jpg",
-			"resources/skybox/front.jpg",
-			"resources/skybox/back.jpg"
+			//"resources/skybox/right.jpg",
+			//"resources/skybox/left.jpg",
+			//"resources/skybox/top.jpg",
+			//"resources/skybox/bottom.jpg",
+			//"resources/skybox/front.jpg",
+			//"resources/skybox/back.jpg"
+			"resources/morose/morose_ft.jpg",
+			"resources/morose/morose_bk.jpg",
+			"resources/morose/morose_up.jpg",
+			"resources/morose/morose_dn.jpg",
+			"resources/morose/morose_rt.jpg",
+			"resources/morose/morose_lf.jpg",
 		};
 		cubemapTexture = loadCubemap(faces);
 

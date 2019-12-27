@@ -14,6 +14,7 @@
 #include "temple/temple.h"
 #include "book/book.h"
 #include "rock/rock.h"
+#include "ground/ground.h"
 
 #include <iostream>
 
@@ -80,6 +81,8 @@ int main()
 	Temple temple = Temple();
 	Book book = Book();
 	Rock rock = Rock();
+	Ground ground = Ground();
+	
 
 	// render loop
 	// -----------
@@ -102,7 +105,8 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -8.0f));
-		rock.drawRock(model, view, projection, camera);
+		//rock.drawRock(model, view, projection, camera);
+
 		// temple model
 		//temple.drawTemple(model, view, projection, camera);
 
@@ -117,9 +121,13 @@ int main()
 
 		//camera.ProcessMouseMovement(-deltaTime * 70, 0.0f);  // for more smoothness
 
+		// ground
+		ground.draw(glm::mat4(1.0f), view, projection, camera);
+
 		// skybox
 		view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
 		skybox.drawSkybox(view, projection);
+
 
 	    // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
@@ -153,6 +161,10 @@ void processInput(GLFWwindow *window)
 		camera.ProcessKeyboard(LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		camera.ProcessKeyboard(UP, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+		camera.ProcessKeyboard(DOWN, deltaTime);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
