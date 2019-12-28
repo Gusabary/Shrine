@@ -6,7 +6,12 @@ in VS_OUT {
     vec2 texCoords;
 } gs_in[];
 
+in vec3 iNormal[];
+in vec3 iFragPos[];
+
 out vec2 TexCoords; 
+out vec3 Normal;
+out vec3 FragPos;
 
 uniform bool doExplode;
 uniform float time;
@@ -28,6 +33,9 @@ vec3 GetNormal()
 }
 
 void main() {    
+	Normal = (iNormal[0] + iNormal[1] + iNormal[2]) / 3;
+	FragPos = (iFragPos[0] + iFragPos[1] + iFragPos[2]) / 3;
+
     vec3 normal = GetNormal();
 
     gl_Position = explode(gl_in[0].gl_Position, normal);

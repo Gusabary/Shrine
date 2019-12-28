@@ -28,9 +28,9 @@ public:
 		rockShader.setVec3("light.color", 1.0f, 1.0f, 1.0f);
 		rockShader.setVec3("light.direction", camera.Front);
 		rockShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
-		rockShader.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
+		rockShader.setFloat("light.outerCutOff", glm::cos(glm::radians(30.0f)));
 		rockShader.setVec3("viewPos", camera.Position);
-		float ambientValue = 0.1f;
+		float ambientValue = 0.3f;
 		float diffuseValue = 0.8f;
 		float specularValue = 1.0f;
 		rockShader.setVec3("light.ambient", ambientValue, ambientValue, ambientValue);
