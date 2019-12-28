@@ -13,7 +13,7 @@ public:
 	Rock()
 		: rockShader(Shader("rock/rock.vs", "rock/rock.fs", "rock/rock.gs")),
 		rockModel(Model("resources/objects/rock/rockkk.obj")),
-		startTime(glfwGetTime())
+		startTime(glfwGetTime()), doExplode(false)
 	{}
 
 	void drawRock(glm::mat4 model, glm::mat4 view, glm::mat4 projection, Camera camera) {
@@ -40,12 +40,19 @@ public:
 		rockShader.setFloat("light.linear", 0.09f);
 		rockShader.setFloat("light.quadratic", 0.032f);
 		rockShader.setFloat("time", glfwGetTime() - startTime);
+		rockShader.setBool("doExplode", this->doExplode);
 		rockModel.Draw(rockShader);
+	}
+
+	void startExplode() {
+		this->doExplode = true;
+		this->startTime = glfwGetTime();
 	}
 
 private:
 	unsigned int skyboxVAO, skyboxVBO;
 	unsigned int cubemapTexture;
 	Model rockModel;
-	const float startTime;
+	float startTime;
+	bool doExplode;
 };

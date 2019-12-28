@@ -22,7 +22,7 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void processInput(GLFWwindow *window);
+void processInput(GLFWwindow *window, Rock &rock);
 unsigned int loadTexture(char const *path);
 
 // settings
@@ -30,7 +30,8 @@ const unsigned int SCR_WIDTH = 1280;
 const unsigned int SCR_HEIGHT = 720;
 
 // camera
-Camera camera(glm::vec3(-15.0f, 1.0f, 30.0f));
+//Camera camera(glm::vec3(-15.0f, 1.0f, 30.0f));
+Camera camera(glm::vec3(0.0f, 1.0f, 15.0f));
 float lastX = (float)SCR_WIDTH / 2.0;
 float lastY = (float)SCR_HEIGHT / 2.0;
 bool firstMouse = true;
@@ -83,10 +84,11 @@ int main()
 	EightDiagram eightDiagram = EightDiagram();
 	Temple temple = Temple();
 	Book book = Book();
-	Rock rock = Rock();
 	Ground ground = Ground();
 	Buddha buddha = Buddha();
-	
+	Rock rock1 = Rock();
+	Rock rock2 = Rock();
+
 
 	// render loop
 	// -----------
@@ -98,7 +100,8 @@ int main()
 		lastFrame = currentFrame;
 
 		// input
-		processInput(window);
+		processInput(window, rock1);
+		processInput(window, rock2);
 
 		// render
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -110,9 +113,20 @@ int main()
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
 		// rock
-		//rock.drawRock(model, view, projection, camera);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.4f, 1.7f, 6.0f));
+		model = glm::rotate(model, glm::radians(-75.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(1.33f, 1.33f, 1.33f));
+		rock1.drawRock(model, view, projection, camera);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.28f, 1.7f, -6.0f));
+		model = glm::rotate(model, glm::radians(-75.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(1.55f, 1.55f, 1.55f));
+		rock2.drawRock(model, view, projection, camera);
 
 		// temple model
+		model = glm::mat4(1.0f);
 		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		temple.drawTemple(model, view, projection, camera);
 
@@ -166,7 +180,7 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
+void processInput(GLFWwindow *window, Rock &rock)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -199,6 +213,8 @@ void processInput(GLFWwindow *window)
 		camera.ProcessKeyboard(UP, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		camera.ProcessKeyboard(DOWN, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
+		rock.startExplode();
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
