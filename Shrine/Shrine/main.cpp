@@ -175,6 +175,7 @@ int main()
 				else
 					rock2.startExplode();
 				stage = 0;
+				buddha.startGlare = true;  // once a rock is exploded, buddha starts to glare
 			}
 			model = glm::translate(model, bomb.getPos());
 			model = glm::rotate(model, glm::radians(20.0f), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -191,6 +192,8 @@ int main()
 		model = glm::translate(model, glm::vec3(0.0f, 0.4f, 0.0f));
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.005f, 0.005f, 0.005f));
+		if (camera.IsLightOn)
+			buddha.accumulateGlare(deltaTime);
 		buddha.draw(model, view, projection, camera);
 
 		// eight-diagram
