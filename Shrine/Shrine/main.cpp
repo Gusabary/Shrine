@@ -23,7 +23,7 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void processInput(GLFWwindow *window, Rock &rock);
+void processInput(GLFWwindow *window);
 unsigned int loadTexture(char const *path);
 
 // settings
@@ -42,6 +42,15 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 float buddhaHeight = 0.0f;
+
+/*
+ * stage:
+ *  0: normal state
+ *  1: there is an explode request to handle
+ *  2: 
+ */
+int stage = 0;
+int rockState = 0;  // 0: both alive, 1: rock1 is exploded, 2: rock2 is exploded, 3: both rocks are exploded
 
 int main()
 {
@@ -101,8 +110,36 @@ int main()
 		lastFrame = currentFrame;
 
 		// input
-		processInput(window, rock1);
-		processInput(window, rock2);
+		processInput(window);
+
+		if (stage == 1) {
+			if (!bomb.inExplodableArea(camera.Position)) {
+				stage = 0;
+			}
+			else {
+				bomb.setPos(camera.Position);
+				if (camera.Position.z > 0) {
+					bomb.setTargetPos(glm::vec3(0.4f, 1.7f, 9.0f));
+					if (rockState == 0 || rockState == 2) {
+						rockState += 1;
+						stage = 2;
+					}
+					else {
+						stage = 0;
+					}
+				}
+				else {
+					bomb.setTargetPos(glm::vec3(0.4f, 1.7f, -8.7f));
+					if (rockState == 0 || rockState == 1) {
+						rockState += 2;
+						stage = 2;
+					}
+					else {
+						stage = 0;
+					}
+				}
+			}
+		}
 
 		// render
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -127,9 +164,22 @@ int main()
 		rock2.drawRock(model, view, projection, camera);
 
 		// bomb
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.28f, 1.7f, 10.0f));
-		bomb.draw(model, view, projection, camera);
+		if (stage == 2) {
+			model = glm::mat4(1.0f);
+			//bomb.setPosZ(bomb.getPosZ() - deltaTime * bomb.getVZ());
+			bool shouldExplode = bomb.updatePos(deltaTime);
+			if (shouldExplode) {
+				bomb.startExplode();
+				if (bomb.getPos().z > 0)
+					rock1.startExplode();
+				else
+					rock2.startExplode();
+				stage = 0;
+			}
+			model = glm::translate(model, bomb.getPos());
+			model = glm::rotate(model, glm::radians(20.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			bomb.draw(model, view, projection, camera);
+		}
 
 		// temple model
 		model = glm::mat4(1.0f);
@@ -186,7 +236,7 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window, Rock &rock)
+void processInput(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -219,8 +269,8 @@ void processInput(GLFWwindow *window, Rock &rock)
 		camera.ProcessKeyboard(UP, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		camera.ProcessKeyboard(DOWN, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
-		rock.startExplode();
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && stage == 0)
+		stage = 1;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
