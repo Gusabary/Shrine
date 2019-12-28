@@ -68,7 +68,7 @@ public:
         return glm::lookAt(Position, Position + Front, Up);
     }
 
-	bool inLegalArea(glm::vec3 pos) {
+	bool inLegalArea(glm::vec3 pos, int rockState) {
 		if (pos.x >= -1.15 && pos.x <= 1.15 && pos.z >= -1.0 && pos.z <= 1.3)
 			return false;
 		if (pos.x >= 1.0 && pos.x <= 4.2 && pos.z >= 5.7 && pos.z <= 8.7)
@@ -82,6 +82,10 @@ public:
 		if (pos.x >= -4.2 && pos.x <= -2.75 && pos.z >= -5.7 && pos.z <= 5.7)
 			return false;
 		if (pos.x >= 2.15 && pos.x <= 4.2 && pos.z >= -5.7 && pos.z <= 5.7)
+			return false;
+		if ((rockState == 0 || rockState == 2) && pos.x >= -0.65 && pos.x <= 1.0 && pos.z >= 4.5 && pos.z <= 8.0)
+			return false;
+		if ((rockState == 0 || rockState == 1) && pos.x >= -1.3 && pos.x <= 1.35 && pos.z >= -7.5 && pos.z <= -4.0)
 			return false;
 		return true;
 	}
@@ -97,7 +101,7 @@ public:
 	}
 
     // Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-    void ProcessKeyboard(Camera_Movement direction, float deltaTime)
+    void ProcessKeyboard(Camera_Movement direction, float deltaTime, int rockState)
     {
 		const glm::vec3 oldPos = Position;
         float velocity = MovementSpeed * deltaTime;
@@ -114,7 +118,7 @@ public:
 		if (direction == DOWN)
 			Position -= Up * velocity;
 
-		if (inLegalArea(oldPos) && !inLegalArea(Position))
+		if (inLegalArea(oldPos, rockState) && !inLegalArea(Position, rockState))
 			Position = oldPos;
 		Position.y = updatePosY(Position);
     }

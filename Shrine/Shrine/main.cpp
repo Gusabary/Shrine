@@ -47,7 +47,7 @@ float buddhaHeight = 0.0f;
  * stage:
  *  0: normal state
  *  1: there is an explode request to handle
- *  2: 
+ *  2: bomb is flying
  */
 int stage = 0;
 int rockState = 0;  // 0: both alive, 1: rock1 is exploded, 2: rock2 is exploded, 3: both rocks are exploded
@@ -242,19 +242,19 @@ void processInput(GLFWwindow *window)
 		glfwSetWindowShouldClose(window, true);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		camera.ProcessKeyboard(FORWARD, deltaTime);
+		camera.ProcessKeyboard(FORWARD, deltaTime, rockState);
 		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		camera.ProcessKeyboard(BACKWARD, deltaTime);
+		camera.ProcessKeyboard(BACKWARD, deltaTime, rockState);
 		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		camera.ProcessKeyboard(LEFT, deltaTime);
+		camera.ProcessKeyboard(LEFT, deltaTime, rockState);
 		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		camera.ProcessKeyboard(RIGHT, deltaTime);
+		camera.ProcessKeyboard(RIGHT, deltaTime, rockState);
 		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
@@ -266,9 +266,9 @@ void processInput(GLFWwindow *window)
 		cout << buddhaHeight << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-		camera.ProcessKeyboard(UP, deltaTime);
+		camera.ProcessKeyboard(UP, deltaTime, rockState);
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
-		camera.ProcessKeyboard(DOWN, deltaTime);
+		camera.ProcessKeyboard(DOWN, deltaTime, rockState);
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && stage == 0)
 		stage = 1;
 }
