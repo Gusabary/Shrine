@@ -26,7 +26,7 @@ public:
 	Shader bookShader;
 
 	Book()
-		: bookShader(Shader("book/book.vs", "book/book.fs"))
+		: bookShader(Shader("book/book.vs", "book/book.fs")), bookPosZ(35.0f)
 	{
 		// eightDiagram VAO
 		glGenVertexArrays(1, &bookVAO);
@@ -60,12 +60,13 @@ public:
 		bookShader.setFloat("material.shininess", 32.0f);
 		bookShader.setVec3("light.position", camera.Position);
 		bookShader.setVec3("light.color", 1.0f, 1.0f, 1.0f);
-		bookShader.setVec3("light.direction", camera.Front);
+		//bookShader.setVec3("light.direction", 0.0f, -1.0f, 0.0f);
+		bookShader.setVec3("light.direction", glm::sin((float)glfwGetTime() * 2.0f), glm::cos((float)glfwGetTime() * 2.0f), 0.0f);
 		bookShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
 		bookShader.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
 		bookShader.setVec3("viewPos", camera.Position);
-		float ambientValue = 0.1f;
-		float diffuseValue = 0.8f;
+		float ambientValue = 0.3f;
+		float diffuseValue = 1.0f;
 		float specularValue = 1.0f;
 		bookShader.setVec3("light.ambient", ambientValue, ambientValue, ambientValue);
 		bookShader.setVec3("light.diffuse", diffuseValue, diffuseValue, diffuseValue);
@@ -86,12 +87,23 @@ public:
 		glBindVertexArray(0);
 	}
 
+	float getPosZ() { return this->bookPosZ; }
+
+	void setPosZ(float posZ) { this->bookPosZ = posZ; }
+
+	float getVZ() { 
+		float diff = glm::pow(40.0f - this->bookPosZ, 1.3);
+
+		return 0.05f * diff; 
+	}
+
 private:
 	// utility function for loading a 2D texture from file
 	// ---------------------------------------------------
 	unsigned int bookVAO, bookVBO;
 	unsigned int bookTexture;
 	unsigned int normMapTexture;
+	float bookPosZ;
 
 	unsigned int loadTexture(char const * path)
 	{

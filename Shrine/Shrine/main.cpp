@@ -130,7 +130,12 @@ int main()
 		//model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		//eightDiagram.drawEightDiagram(model, view, projection);
 
-		//book.drawBook(model, view, projection, camera);
+		// book
+		model = glm::mat4(1.0f);
+		book.setPosZ(book.getPosZ() - deltaTime * book.getVZ());
+		model = glm::translate(model, glm::vec3(-15.5f, 0.5f, book.getPosZ()));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		book.drawBook(model, view, projection, camera);
 
 		//camera.ProcessMouseMovement(-deltaTime * 70, 0.0f);  // for more smoothness
 
