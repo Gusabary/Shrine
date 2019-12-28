@@ -30,8 +30,8 @@ public:
 		templeShader.setFloat("light.outerCutOff", glm::cos(glm::radians(30.0f)));
 		templeShader.setVec3("viewPos", camera.Position);
 		float ambientValue = 0.3f;
-		float diffuseValue = 0.8f;
-		float specularValue = 1.0f;
+		float diffuseValue = camera.IsLightOn ? 0.8f : 0.0f;
+		float specularValue = camera.IsLightOn ? 1.0f : 0.0f;
 		templeShader.setVec3("light.ambient", ambientValue, ambientValue, ambientValue);
 		templeShader.setVec3("light.diffuse", diffuseValue, diffuseValue, diffuseValue);
 		templeShader.setVec3("light.specular", specularValue, specularValue, specularValue);

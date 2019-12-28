@@ -271,6 +271,13 @@ void processInput(GLFWwindow *window)
 		camera.ProcessKeyboard(DOWN, deltaTime, rockState);
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && stage == 0)
 		stage = 1;
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		if (glfwGetTime() - camera.LastToggleLight > 0.5f) {
+			// cannot toggle light twice in half second
+			camera.IsLightOn = !camera.IsLightOn;
+			camera.LastToggleLight = glfwGetTime();
+		}
+	}
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
