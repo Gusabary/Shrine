@@ -31,8 +31,8 @@ const unsigned int SCR_WIDTH = 1280;
 const unsigned int SCR_HEIGHT = 720;
 
 // camera
-//Camera camera(glm::vec3(-15.0f, 1.0f, 30.0f));
-Camera camera(glm::vec3(0.0f, 1.0f, 15.0f));
+Camera camera(glm::vec3(-15.0f, 1.0f, 30.0f));
+//Camera camera(glm::vec3(0.0f, 1.0f, 15.0f));
 float lastX = (float)SCR_WIDTH / 2.0;
 float lastY = (float)SCR_HEIGHT / 2.0;
 bool firstMouse = true;
@@ -209,6 +209,9 @@ int main()
 		model = glm::translate(model, glm::vec3(-15.5f, 0.5f, book.getPosZ()));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		book.drawBook(model, view, projection, camera);
+		cout << book.getPosZ() << endl;
+		if (book.getPosZ() < -20.0f)
+			camera.CanBeMoved = true;
 
 		//camera.ProcessMouseMovement(-deltaTime * 70, 0.0f);  // for more smoothness
 
@@ -245,19 +248,23 @@ void processInput(GLFWwindow *window)
 		glfwSetWindowShouldClose(window, true);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		camera.ProcessKeyboard(FORWARD, deltaTime, rockState);
+		if (camera.CanBeMoved)
+			camera.ProcessKeyboard(FORWARD, deltaTime, rockState);
 		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		camera.ProcessKeyboard(BACKWARD, deltaTime, rockState);
+		if (camera.CanBeMoved)
+			camera.ProcessKeyboard(BACKWARD, deltaTime, rockState);
 		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		camera.ProcessKeyboard(LEFT, deltaTime, rockState);
+		if (camera.CanBeMoved)
+			camera.ProcessKeyboard(LEFT, deltaTime, rockState);
 		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		camera.ProcessKeyboard(RIGHT, deltaTime, rockState);
+		if (camera.CanBeMoved)
+			camera.ProcessKeyboard(RIGHT, deltaTime, rockState);
 		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
