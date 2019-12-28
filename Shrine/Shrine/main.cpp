@@ -16,6 +16,7 @@
 #include "rock/rock.h"
 #include "ground/ground.h"
 #include "buddha/buddha.h"
+#include "bomb/bomb.h"
 
 #include <iostream>
 
@@ -88,7 +89,7 @@ int main()
 	Buddha buddha = Buddha();
 	Rock rock1 = Rock();
 	Rock rock2 = Rock();
-
+	Bomb bomb = Bomb();
 
 	// render loop
 	// -----------
@@ -124,6 +125,11 @@ int main()
 		model = glm::rotate(model, glm::radians(-75.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(1.55f, 1.55f, 1.55f));
 		rock2.drawRock(model, view, projection, camera);
+
+		// bomb
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.28f, 1.7f, 10.0f));
+		bomb.draw(model, view, projection, camera);
 
 		// temple model
 		model = glm::mat4(1.0f);
