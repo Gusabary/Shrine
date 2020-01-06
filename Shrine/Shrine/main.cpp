@@ -91,8 +91,6 @@ int main()
 		return -1;
 	}
 
-	SoundEngine->play2D("resources/audio/Shrine.mp3", GL_TRUE);
-
 	// configure global opengl state
 	// -----------------------------
 	glEnable(GL_DEPTH_TEST);
@@ -106,6 +104,9 @@ int main()
 	Rock rock1 = Rock();
 	Rock rock2 = Rock();
 	Bomb bomb = Bomb();
+
+	SoundEngine->play2D("resources/audio/Shrine.mp3", GL_TRUE);
+
 
 	// render loop
 	// -----------
@@ -183,6 +184,7 @@ int main()
 					rock2.startExplode();
 				stage = 0;
 				buddha.startGlare = true;  // once a rock is exploded, buddha starts to glare
+				SoundEngine->play2D("resources/audio/explode.mp3", GL_FALSE);
 			}
 			model = glm::translate(model, bomb.getPos());
 			model = glm::rotate(model, glm::radians(20.0f), glm::vec3(0.0f, 0.0f, 1.0f));
