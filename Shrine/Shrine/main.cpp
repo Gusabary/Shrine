@@ -12,7 +12,6 @@
 #include "camera.h"
 #include "model.h"
 #include "skybox/skybox.h"
-#include "eight-diagram/eight-diagram.h"
 #include "temple/temple.h"
 #include "book/book.h"
 #include "rock/rock.h"
@@ -20,13 +19,10 @@
 #include "buddha/buddha.h"
 #include "bomb/bomb.h"
 
-#include <iostream>
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
-unsigned int loadTexture(char const *path);
 
 // settings
 const unsigned int SCR_WIDTH = 1280;
@@ -34,7 +30,6 @@ const unsigned int SCR_HEIGHT = 720;
 
 // camera
 Camera camera(glm::vec3(-15.0f, 1.0f, 30.0f));
-//Camera camera(glm::vec3(0.0f, 1.0f, 15.0f));
 float lastX = (float)SCR_WIDTH / 2.0;
 float lastY = (float)SCR_HEIGHT / 2.0;
 bool firstMouse = true;
@@ -42,8 +37,6 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-
-float buddhaHeight = 0.0f;
 
 /*
  * stage:
@@ -55,7 +48,6 @@ int stage = 0;
 int rockState = 0;  // 0: both alive, 1: rock1 is exploded, 2: rock2 is exploded, 3: both rocks are exploded
 
 irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
-
 
 int main()
 {
@@ -96,7 +88,6 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	SkyBox skybox = SkyBox();
-	EightDiagram eightDiagram = EightDiagram();
 	Temple temple = Temple();
 	Book book = Book();
 	Ground ground = Ground();
@@ -106,7 +97,6 @@ int main()
 	Bomb bomb = Bomb();
 
 	SoundEngine->play2D("resources/audio/Shrine.mp3", GL_TRUE);
-
 
 	// render loop
 	// -----------
@@ -174,7 +164,6 @@ int main()
 		// bomb
 		if (stage == 2) {
 			model = glm::mat4(1.0f);
-			//bomb.setPosZ(bomb.getPosZ() - deltaTime * bomb.getVZ());
 			bool shouldExplode = bomb.updatePos(deltaTime);
 			if (shouldExplode) {
 				bomb.startExplode();
@@ -191,7 +180,7 @@ int main()
 			bomb.draw(model, view, projection, camera);
 		}
 
-		// temple model
+		// temple
 		model = glm::mat4(1.0f);
 		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		temple.drawTemple(model, view, projection, camera);
@@ -205,13 +194,6 @@ int main()
 			buddha.accumulateGlare(deltaTime);
 		buddha.draw(model, view, projection, camera);
 
-		// eight-diagram
-		//eightDiagram.setPos(eightDiagram.getPos() - deltaTime * eightDiagram.getTranslateV());
-		//model = glm::translate(model, glm::vec3(eightDiagram.getPos(), 0.0f, -20.0f));
-		//model = glm::rotate(model, (float)(glfwGetTime() * eightDiagram.getRotateV()), glm::vec3(0.0f, 0.5f, 1.0f));
-		//model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		//eightDiagram.drawEightDiagram(model, view, projection);
-
 		// book
 		model = glm::mat4(1.0f);
 		book.setPosZ(book.getPosZ() - deltaTime * book.getVZ());
@@ -222,15 +204,12 @@ int main()
 		if (book.getPosZ() < -20.0f)
 			camera.CanBeMoved = true;
 
-		//camera.ProcessMouseMovement(-deltaTime * 70, 0.0f);  // for more smoothness
-
 		// ground
 		ground.draw(glm::mat4(1.0f), view, projection, camera);
 
 		// skybox
 		view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
 		skybox.drawSkybox(view, projection);
-
 
 	    // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
@@ -259,30 +238,18 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		if (camera.CanBeMoved)
 			camera.ProcessKeyboard(FORWARD, deltaTime, rockState);
-		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 		if (camera.CanBeMoved)
 			camera.ProcessKeyboard(BACKWARD, deltaTime, rockState);
-		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 		if (camera.CanBeMoved)
 			camera.ProcessKeyboard(LEFT, deltaTime, rockState);
-		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 		if (camera.CanBeMoved)
 			camera.ProcessKeyboard(RIGHT, deltaTime, rockState);
-		cout << camera.Position.x << "\t" << camera.Position.y << "\t" << camera.Position.z << "\t" << endl;
-	}
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-		buddhaHeight += 0.005f;
-		cout << buddhaHeight << endl;
-	}
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-		buddhaHeight -= 0.005f;
-		cout << buddhaHeight << endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
 		camera.ProcessKeyboard(UP, deltaTime, rockState);
@@ -335,40 +302,4 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(yoffset);
-}
-
-unsigned int loadTexture(char const *path)
-{
-	unsigned int textureID;
-	glGenTextures(1, &textureID);
-
-	int width, height, nrChannels;
-	stbi_set_flip_vertically_on_load(true);
-	unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
-
-	if (data)
-	{
-		GLenum format;
-		if (nrChannels == 1)
-			format = GL_RED;
-		else if (nrChannels == 3)
-			format = GL_RGB;
-		else if (nrChannels == 4)
-			format = GL_RGBA;
-
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-	else
-	{
-		std::cout << "Failed to load texture" << std::endl;
-	}
-	stbi_image_free(data);
-	return textureID;
 }
