@@ -6,6 +6,8 @@
 
 using namespace std;
 
+extern irrklang::ISoundEngine *SoundEngine;
+
 class Buddha {
 public:
 	Shader shader;
@@ -14,7 +16,7 @@ public:
 	Buddha()
 		: shader(Shader("buddha/buddha.vs", "buddha/buddha.fs")),
 		  buddhaModel(Model("resources/objects/buddha/12334_statue_v1_l3.obj")),
-		  startGlare(false), glareValue(0.0f)
+		  startGlare(false), glareValue(0.0f), shouldBling(true)
 	{}
 
 	void draw(glm::mat4 model, glm::mat4 view, glm::mat4 projection, Camera camera) {
@@ -54,8 +56,13 @@ public:
 		if (!this->startGlare)
 			return;
 		glareValue += deltaTime;  // whole process should complete in 10 seconds
-		if (glareValue > 10.0f)
+		if (glareValue > 10.0f) {
+			if (shouldBling) {
+				SoundEngine->play2D("resources/audio/buddha.mp3", GL_FALSE);
+				shouldBling = false;
+			}
 			glareValue = 10.0f;
+		}
 	}
 
 private:
@@ -63,6 +70,7 @@ private:
 	unsigned int cubemapTexture;
 	Model buddhaModel;
 	float glareValue;
+	bool shouldBling;
 	const glm::vec3 bronzeAmbient = glm::vec3(0.212500, 0.127500, 0.054000);
 	const glm::vec3 bronzeDiffuse = glm::vec3(0.714000, 0.428400, 0.181440);
 	const glm::vec3 bronzeSpecular = glm::vec3(0.393548, 0.271906, 0.166721);

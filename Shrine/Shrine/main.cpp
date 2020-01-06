@@ -295,6 +295,7 @@ void processInput(GLFWwindow *window)
 			// cannot toggle light twice in half second
 			camera.IsLightOn = !camera.IsLightOn;
 			camera.LastToggleLight = glfwGetTime();
+			SoundEngine->play2D("resources/audio/light.mp3", GL_FALSE);
 		}
 	}
 }
