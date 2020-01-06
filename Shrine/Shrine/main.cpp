@@ -6,6 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <irrklang/irrKlang.h>
+
 #include "shader.h"
 #include "camera.h"
 #include "model.h"
@@ -52,6 +54,9 @@ float buddhaHeight = 0.0f;
 int stage = 0;
 int rockState = 0;  // 0: both alive, 1: rock1 is exploded, 2: rock2 is exploded, 3: both rocks are exploded
 
+irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
+
+
 int main()
 {
 	// glfw: initialize and configure
@@ -85,6 +90,8 @@ int main()
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
+
+	SoundEngine->play2D("resources/audio/Shrine.mp3", GL_TRUE);
 
 	// configure global opengl state
 	// -----------------------------
