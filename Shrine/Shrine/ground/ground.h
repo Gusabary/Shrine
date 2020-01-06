@@ -38,7 +38,7 @@ public:
 
 		// load textures
 		// -------------
-		texture = loadTexture("resources/morose/morose_dn.jpg");
+		texture = loadTexture("resources/skybox/morose_dn.jpg");
 		//normMapTexture = loadTexture("resources/textures/book-norm.jpg");
 
 		//bookShader.use();

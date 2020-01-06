@@ -71,18 +71,12 @@ public:
 		// -------------
 		vector<std::string> faces
 		{
-			//"resources/skybox/right.jpg",
-			//"resources/skybox/left.jpg",
-			//"resources/skybox/top.jpg",
-			//"resources/skybox/bottom.jpg",
-			//"resources/skybox/front.jpg",
-			//"resources/skybox/back.jpg"
-			"resources/morose/morose_ft.jpg",
-			"resources/morose/morose_bk.jpg",
-			"resources/morose/morose_up.jpg",
-			"resources/morose/morose_dn.jpg",
-			"resources/morose/morose_rt.jpg",
-			"resources/morose/morose_lf.jpg",
+			"resources/skybox/morose_ft.jpg",
+			"resources/skybox/morose_bk.jpg",
+			"resources/skybox/morose_up.jpg",
+			"resources/skybox/morose_dn.jpg",
+			"resources/skybox/morose_rt.jpg",
+			"resources/skybox/morose_lf.jpg",
 		};
 		cubemapTexture = loadCubemap(faces);
 
@@ -171,7 +165,6 @@ private:
 			if (data)
 			{
 				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-				cout << "success" << endl;
 				stbi_image_free(data);
 			}
 			else

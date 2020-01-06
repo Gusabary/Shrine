@@ -200,7 +200,6 @@ int main()
 		model = glm::translate(model, glm::vec3(-15.5f, 0.5f, book.getPosZ()));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		book.drawBook(model, view, projection, camera);
-		cout << book.getPosZ() << endl;
 		if (book.getPosZ() < -20.0f)
 			camera.CanBeMoved = true;
 
