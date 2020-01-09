@@ -38,6 +38,22 @@ public:
 		templeShader.setFloat("light.constant", 1.0f);
 		templeShader.setFloat("light.linear", 0.09f);
 		templeShader.setFloat("light.quadratic", 0.032f);
+
+		templeShader.setVec3("pointLights1.position", -4.6f, 4.3f, 8.7f);
+		templeShader.setVec3("pointLights1.ambient", 0.05f, 0.05f, 0.05f);
+		templeShader.setVec3("pointLights1.diffuse", 1.0f, 0.6f, 0.0f);
+		templeShader.setVec3("pointLights1.specular", 2.0f, 2.0f, 2.0f);
+		templeShader.setFloat("pointLights1.constant", 1.5f);
+		templeShader.setFloat("pointLights1.linear", 0.3);
+		templeShader.setFloat("pointLights1.quadratic", 0.3);
+
+		templeShader.setVec3("pointLights2.position", -4.6f, 4.3f, -8.7f);
+		templeShader.setVec3("pointLights2.ambient", 0.05f, 0.05f, 0.05f);
+		templeShader.setVec3("pointLights2.diffuse", 1.0f, 0.6f, 0.0f);
+		templeShader.setVec3("pointLights2.specular", 2.0f, 2.0f, 2.0f);
+		templeShader.setFloat("pointLights2.constant", 1.5f);
+		templeShader.setFloat("pointLights2.linear", 0.3);
+		templeShader.setFloat("pointLights2.quadratic", 0.3);
 		templeModel.Draw(templeShader);
 	}
 
