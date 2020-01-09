@@ -25,7 +25,7 @@ public:
 	Shader shader;
 
 	FrameBuffer()
-		: shader(Shader("frameBuffer/frameBuffer.vs", "frameBuffer/frameBuffer.fs"))
+		: shader(Shader("frameBuffer/frameBuffer.vs", "frameBuffer/frameBuffer.fs")), startTime((float)glfwGetTime())
 	{
 		shader.use();
 		shader.setInt("screenTexture", 0);
@@ -80,6 +80,7 @@ public:
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		shader.use();
+		shader.setFloat("time", (float)glfwGetTime() - startTime);
 		glBindVertexArray(quadVAO);
 		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);	// use the color attachment texture as the texture of the quad plane
 		glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -91,4 +92,5 @@ private:
 	unsigned int framebuffer;
 	unsigned int textureColorbuffer;
 	unsigned int rbo;
+	const float startTime;
 };
