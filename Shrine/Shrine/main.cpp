@@ -18,6 +18,7 @@
 #include "ground/ground.h"
 #include "buddha/buddha.h"
 #include "bomb/bomb.h"
+#include "frameBuffer/frameBuffer.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -95,6 +96,7 @@ int main()
 	Rock rock1 = Rock();
 	Rock rock2 = Rock();
 	Bomb bomb = Bomb();
+	FrameBuffer frameBuffer = FrameBuffer();
 
 	SoundEngine->play2D("resources/audio/Shrine.mp3", GL_TRUE);
 
@@ -109,6 +111,8 @@ int main()
 
 		// input
 		processInput(window);
+
+		frameBuffer.beforeRender();
 
 		if (stage == 1) {
 			if (!bomb.inExplodableArea(camera.Position)) {
@@ -209,6 +213,8 @@ int main()
 		// skybox
 		view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
 		skybox.drawSkybox(view, projection);
+
+		frameBuffer.afterRender();
 
 	    // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
